@@ -1,0 +1,1 @@
+start cmd /k python C:\Users\almah\Desktop\Server\Server_Final\bin\simple_web_server.py
