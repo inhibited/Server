@@ -5,13 +5,13 @@ A Simple Web Server
 
 ## Purpose
 
-This is a Simple Web Server Project For Academic Learning.
+This is a Simple Web Server Project For Academic Learning.__
 This is A project of 2-2 term of Computer Science Discipline Khulna University , Banglasdesh.
 
 ## Project Supervisor
 
 #### Kazi Masudul Alam
- Assistant Professor
+ Assistant Professor__
  Khulna University,Bangladesh.
 
 ## Overview:
