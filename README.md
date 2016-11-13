@@ -6,15 +6,13 @@ A Simple Web Server
 ## Purpose
 
 This is a Simple Web Server Project For Academic Learning.
-
 This is A project of 2-2 term of Computer Science Discipline Khulna University , Banglasdesh.
 
 ## Project Supervisor
 
-### Kazi Masudul Alam
-#### Assistant Professor
-#### Khulna University
-#### Bangladesh.
+#### Kazi Masudul Alam
+ Assistant Professor
+ Khulna University,Bangladesh.
 
 ## Overview:
 
@@ -25,4 +23,4 @@ This is A project of 2-2 term of Computer Science Discipline Khulna University ,
 * Can Run python file
 * This server uses php server to run php file.So php server should be running with main server to run php file.
 	
-##### Thanks.
+##### Thank You.
