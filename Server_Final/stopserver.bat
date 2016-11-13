@@ -1,1 +1,0 @@
-start cmd /k python C:\Users\almah\Desktop\Server\Server_Final\bin\stop_server.py
