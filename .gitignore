@@ -1,18 +1,18 @@
-#ignoring all files
-*
+
 #allowing known files
-*!.py
-*!.cpp
-*!.php
-*!.html
-*!.css
-*!.js
-*!.c
-*!.sh
-*!.bat
-*!.png
-*!.jpg
-*!.htm
-*!.conf
-*!.txt
+*.py~
+*.pyc~
+*.pyc
+*.sh~
+*.php~
+*.html~
+*.css~
+*.js~
+*.c~
+*.bat~
+*.png~
+*.jpg~
+*.htm~
+*.conf~
+*.txt~
 
