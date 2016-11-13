@@ -1,7 +1,0 @@
-<?php 
-system("cd /usr/lib/cgi-bin");
-system("sudo python3 script.py");
-?>
-#!/usr/bin/env python or python3
-
-print()

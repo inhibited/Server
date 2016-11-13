@@ -1,5 +1,0 @@
-<form action="tst.php" method="post">
-  <input name="say" value="Hi">
-  <input name="to" value="Mom">
-  <button>Send my greetings</button>
-</form>
