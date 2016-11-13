@@ -11,7 +11,7 @@ def getData(filepath):
     #print(filepath)
     url = "http://localhost:7777/hdocs/"
     url = url + filepath
-    print(url)
+    #print(url)
     try:
         response = urllib.request.urlopen(url)
         data = response.read()
@@ -31,5 +31,5 @@ def runPython(filename):
     response = urllib.request.urlopen(url)
     data = response.read()
     data = data.decode('utf-8')
-    print(data)
+    #print(data)
     return data

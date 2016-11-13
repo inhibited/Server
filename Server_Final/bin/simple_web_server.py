@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 #Backdated server
 #This is not for production use
 
@@ -7,8 +8,7 @@ import sys
 import os
 import io
 import logging
-#import url_parser
-import socketserver
+import time
 import subprocess
 import domain_management
 import posixpath
@@ -32,7 +32,7 @@ host = getHostPort.host
 port = int(input('Enter Port : '))
 rootdir = getRoot.dir()
 #home = host+str(port)
-eext=""
+#rootdir='localhost'
 Code = HTTPStatus.code
 
 class HTTPRecquestHandler(http.server.BaseHTTPRequestHandler):
@@ -61,13 +61,7 @@ class HTTPRecquestHandler(http.server.BaseHTTPRequestHandler):
         logging.debug('HEADER %s'%(self.path))
         path = self.translate_path(self.path)
         ofile = None
-        ctype = None
-        flush,ext = posixpath.splitext(path)
-        if ext in self.extensions:
-            ctype=self.extensions[ext]
-        ext = ext.lower()
-        if ext in self.extensions:
-            ctype=self.extensions[ext]
+        ctype = self.guess_type(path)
         try:
             ofile = open(path, 'rb')
         except OSError:
@@ -95,7 +89,7 @@ class HTTPRecquestHandler(http.server.BaseHTTPRequestHandler):
         path = self.translate_path(self.path)
         #print("translate_path : ")
         homepage = os.path.join(rootdir,"index.html")
-        #print(homepage)
+        #rint(homepage)
         self.path = self.path.rstrip()
 
         if self.path=='/info' or self.path=='/info/':
@@ -183,7 +177,7 @@ class HTTPRecquestHandler(http.server.BaseHTTPRequestHandler):
                 #print(output)
                 #output+="</body></html>"
                 self.send_response(200)
-                self.send_header('Content-type','text/plain')
+                self.send_header('Content-type','text/html')
                 self.end_headers()
                 self.wfile.write(bytes(output,'utf-8'))
                 return
@@ -216,6 +210,8 @@ class HTTPRecquestHandler(http.server.BaseHTTPRequestHandler):
         words = path.split('/')
         words = filter(None,words)
         path = rootdir
+        #print("root=")
+        #print(path)
         path = os.path.join(path,"hdocs")
         for word in words:
             #print(word)
@@ -226,13 +222,13 @@ class HTTPRecquestHandler(http.server.BaseHTTPRequestHandler):
         return path
 
     def do_POST(self):
+        #print(self.path)
         #idata = web.input()
         #print(idata)
         logging.debug('POST %s' % (self.path))
-
         ctype, pdict = cgi.parse_header(self.headers['content-type'])
 
-
+        postvars = {}
         if ctype == 'multipart/form-data':
             pdict['boundary']=bytes(pdict['boundary'],'utf-8')
             postvars = cgi.parse_multipart(self.rfile, pdict)
@@ -240,58 +236,51 @@ class HTTPRecquestHandler(http.server.BaseHTTPRequestHandler):
             length = int(self.headers['content-length'])
             postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
         else:
-            postvars = {}
-        if self.path.find('?') < 0:
-            back = self.path
-        else:
-            self.path[:self.path.find('?')]
+            pdict['boundary']=bytes(pdict['boundary'],'utf-8')
+            postvars = cgi.parse_multipart(self.rfile, pdict)
         logging.debug('TYPE %s' % (ctype))
         logging.debug('PATH %s' % (self.path))
         logging.debug('ARGS %d' % (len(postvars)))
+        string = ""
+        npath = self.path
+        npath.rstrip(' ')
+        npath.rstrip('/')
+        #print(npath)
+        string += npath+"?"
+        #print(string)
+        #postvars = postvars.decode('utf-8')
         if len(postvars):
             i = 0
-            for key in sorted(postvars):
+            for key in postvars:
                 logging.debug('ARG[%d] %s=%s' % (i, key, postvars[key]))
+                #print(key,'=',postvars[key])
+                stt = postvars[key]
+                stt = str(stt)
+                #stt = stt.decode('utf-8')
+                #key = key.decode('utf-8')
+                xx = stt.find("'")
+                stt = stt[xx+1:]
+                #print(stt)
+                xx = stt.find("'")
+                stt = stt[:xx]
+                #key = str(key)
+                #xx = key.find("'")
+                #key = key[xx+1:]
+                #xx = key.find("'")
+                #key = key[:xx]
+                string +=str(key)+'='+str(stt)+'&'
                 i += 1
-        #postvars = postvars.decode('utf-8')
-        print(postvars)
+
+        #print(string)
+        string = string.rstrip('&')
+        #print(string)
+        #print(postvars)
+        self.path = string
+        #print(self.path)
+        return self.do_GET()
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
-        flush,ext = posixpath.splitext(self.path)
-        if self.path.endswith('.php') or self.path.endswith('.php/'):
-            #print('here')
-            filePath = self.path
-            filePath = filePath.lstrip('/')
-            dataD = php_runner.getData(filePath)
-            #print("data received")
-            self.send_response(200)
-            self.send_header('Content-type','text/html')
-            self.end_headers()
-            self.wfile.write(bytes(dataD,'utf-8'))
-            return
-        if self.path.endswith('.py') or self.path.endswith('.py/'):
-            #print('here')
-            filePath = self.path
-            fname = filePath.split('/')
-            filePath = filePath.lstrip('/')
-            #print(fname)
-            #dataD = php_runner.runPython(fname[len(fname)-1])
-            #print("data received")
-            output=""
-            #output="<!DOCTYPE html><html><head><title>Python Output</title></head><body>"
-            try:
-                path = self.translate_path(self.path)
-                output += subprocess.getoutput('python3 '+path)
-            except subprocess.CalledProcessError as err:
-                output += err
-            #print(output)
-            #output+="</body></html>"
-            self.send_response(200)
-            self.send_header('Content-type','text/html')
-            self.end_headers()
-            self.wfile.write(bytes(output,'utf-8'))
-            return
     def about(self):
         htcode = '<html>'
         htcode += '<head>'
@@ -346,9 +335,8 @@ class HTTPRecquestHandler(http.server.BaseHTTPRequestHandler):
 
 def main():
     global server
-    #server = http.server.HTTPServer((host,port),HTTPRecquestHandler)
-    server = socketserver.
-    print('Server started on port',port)
+    server = http.server.HTTPServer((host,port),HTTPRecquestHandler)
+    print(time.asctime(),'Server started on port',port)
     print('....')
     print('ctrl-c to quit server.')
     try:
@@ -358,9 +346,9 @@ def main():
             #server.server_close()
     except KeyboardInterrupt:
         server.server_close()
-        print("Server Stopped")
+        print(time.asctime(),"Server Stopped")
     except:
         server.server_close()
-        print("Server Stopped")
+        print(time.asctime(),"Server Stopped")
 if __name__ == '__main__':
     main()

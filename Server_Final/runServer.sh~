@@ -1,3 +1,0 @@
-#!/bin/bash
-
-python3 -m bin/simple_web_server.py --cgi

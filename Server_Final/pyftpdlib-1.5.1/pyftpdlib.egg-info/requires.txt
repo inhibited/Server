@@ -1,6 +1,0 @@
-
-[sendfile]
-pysendfile
-
-[ssl]
-PyOpenSSL
