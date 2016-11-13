@@ -14,7 +14,7 @@ This is A project of 2-2 term of Computer Science Discipline Khulna University ,
  Assistant Professor <br />
  Khulna University,Bangladesh.
 
-## Overview:
+## Overview
 
 * This Server uses python simpleHTTTpServer.
 * Written in python 3.
