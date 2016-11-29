@@ -8,8 +8,8 @@
 * This server uses php server to run php file.So one should have php configured and php server should be running with main server to run php file.
 
 ### Prerequisites
-* python3
-* php
+* [python3](https://www.python.org/downloads/)
+* [php](http://php.net/downloads.php)
 
 ### Setup
 * Change 'ServerRoot' in httpd.conf to your root directory without unnecessery spaces or anything.
