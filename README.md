@@ -20,6 +20,12 @@
 ### Purpose
 This is a Simple Web Server Project For Academic Learning. <br />
 This is A project of 2-2 term of Computer Science Discipline Khulna University , Banglasdesh.
+
+### Contributors
+* 	Abdullah Al mahmud
+	150220
+	Khulna University,Bangladesh
+
 ### Project Supervisor
 ##### Kazi Masudul Alam
  Assistant Professor <br />
